@@ -1,0 +1,12 @@
+quantity,value,unit
+n_wavelength_bins,139,count
+wavelength_min,2.405,micron
+wavelength_max,4.974,micron
+weighted_mean_depth,24183.1,ppm
+continuum_mean_depth,24069.4,ppm (3.6-3.9 um)
+co2_band_mean_depth,24308.6,ppm (4.3-4.6 um)
+co2_band_excess,239.2,ppm
+co2_band_significance,22.1,sigma
+h2o_h2s_band_mean_depth,24324.6,ppm (2.6-3.0 um)
+h2o_h2s_band_excess,255.2,ppm
+h2o_h2s_band_significance,24.7,sigma

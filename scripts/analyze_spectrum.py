@@ -1,15 +1,22 @@
-"""Analyze the real JWST NIRCam transmission spectrum of HD 189733 b.
+"""Analyze the JWST NIRCam transmission spectrum of HD 189733 b.
 
 Data source: Zenodo record 10.5281/zenodo.11459715, "Products for
 'Hydrogen sulfide and metal-enriched atmosphere for a Jupiter-mass
 exoplanet'", file Data/transit spectrum/HD189733b_NIRCam_spectrum.txt.
 Retrieved directly from Zenodo; reproduced unmodified in data/.
 
-This script computes the weighted mean transit depth and directly compares
-the mean depth in two real molecular-absorption windows against a nearby
-featureless continuum: the CO2 band near 4.3 micron and the combined
-H2O/H2S-influenced band near 2.7-3.0 micron, both relevant to the real
-molecular detections reported for this planet (H2O, CO2, H2S).
+This script computes the weighted mean transit depth and compares the
+mean depth in two wavelength windows against a nearby continuum window:
+one spanning the CO2 band near 4.3-4.6 micron, and one spanning
+2.6-3.0 micron where H2O and H2S both contribute. Both statistics are
+band-contrast signal-to-noise ratios on a simple two-window comparison,
+not molecular detection significances -- a broadband window like this
+can contain contributions from more than one absorber, and the
+continuum itself is a modeling choice, not a measured baseline. Fu et
+al. (2024) derive the actual per-molecule detection significances from
+a full retrieval/model comparison: H2O at 13.4 sigma, CO2 at 11.2
+sigma, CO at 5 sigma, and H2S at 4.5 sigma. This script's own numbers
+are reported alongside those, not as a substitute for them.
 """
 
 from __future__ import annotations
@@ -29,6 +36,10 @@ FIG_DIR = Path(__file__).resolve().parents[1] / "figures"
 CO2_BAND = (4.3, 4.6)
 H2O_H2S_BAND = (2.6, 3.0)
 CONTINUUM_BAND = (3.6, 3.9)
+
+# Fu et al. (2024) full retrieval/model-comparison significances -- a
+# different, more rigorous estimator than this script's band contrast.
+PAPER_SIGMA = {"H2O": 13.4, "CO2": 11.2, "CO": 5.0, "H2S": 4.5}
 
 
 def load_spectrum(path: Path):
@@ -86,10 +97,12 @@ def main() -> None:
         writer.writerow(["continuum_mean_depth", f"{cont_mean*1e6:.1f}", "ppm (3.6-3.9 um)"])
         writer.writerow(["co2_band_mean_depth", f"{co2_mean*1e6:.1f}", "ppm (4.3-4.6 um)"])
         writer.writerow(["co2_band_excess", f"{co2_excess_ppm:.1f}", "ppm"])
-        writer.writerow(["co2_band_significance", f"{co2_sigma:.1f}", "sigma"])
+        writer.writerow(["co2_band_contrast_snr_this_script", f"{co2_sigma:.1f}", "sigma (two-window band contrast, not a molecular detection significance)"])
         writer.writerow(["h2o_h2s_band_mean_depth", f"{h2o_mean*1e6:.1f}", "ppm (2.6-3.0 um)"])
         writer.writerow(["h2o_h2s_band_excess", f"{h2o_excess_ppm:.1f}", "ppm"])
-        writer.writerow(["h2o_h2s_band_significance", f"{h2o_sigma:.1f}", "sigma"])
+        writer.writerow(["h2o_h2s_band_contrast_snr_this_script", f"{h2o_sigma:.1f}", "sigma (two-window band contrast, not a molecular detection significance)"])
+        for molecule, sigma in PAPER_SIGMA.items():
+            writer.writerow([f"paper_retrieval_significance_{molecule}", f"{sigma}", "sigma (Fu et al. 2024, full retrieval)"])
 
     fig, ax = plt.subplots(figsize=(9.5, 5.5))
     ax.errorbar(wave, depth * 1e6, yerr=err * 1e6, fmt="o", ms=3, color="#2c5f8a", ecolor="#9fbfd8", elinewidth=0.8, label="HD 189733 b, JWST NIRCam")
@@ -99,7 +112,7 @@ def main() -> None:
     ax.axvspan(*CONTINUUM_BAND, color="#999999", alpha=0.12, label="continuum window (3.6-3.9 um)")
     ax.set_xlabel("Wavelength [micron]")
     ax.set_ylabel("Transit depth (Rp/Rs)^2 [ppm]")
-    ax.set_title("HD 189733 b transmission spectrum (JWST NIRCam, real reduced data)")
+    ax.set_title("HD 189733 b transmission spectrum (JWST NIRCam)")
     ax.legend(fontsize=7.5, frameon=False, loc="upper left")
     ax.grid(alpha=0.25)
     fig.tight_layout()
@@ -108,8 +121,9 @@ def main() -> None:
     print(f"Wrote {summary_path}")
     print(f"Wrote {FIG_DIR / 'hd189733b_transmission_spectrum.png'}")
     print(f"n={len(wave)}, weighted mean depth = {mean_depth*1e6:.1f} +/- {mean_depth_err*1e6:.2f} ppm")
-    print(f"CO2 band excess = {co2_excess_ppm:.1f} ppm ({co2_sigma:.1f} sigma)")
-    print(f"H2O/H2S band excess = {h2o_excess_ppm:.1f} ppm ({h2o_sigma:.1f} sigma)")
+    print(f"CO2-band contrast (this script) = {co2_excess_ppm:.1f} ppm ({co2_sigma:.1f} sigma band S/N)")
+    print(f"H2O/H2S-band contrast (this script) = {h2o_excess_ppm:.1f} ppm ({h2o_sigma:.1f} sigma band S/N)")
+    print(f"Fu et al. (2024) retrieval significances: H2O {PAPER_SIGMA['H2O']} sigma, CO2 {PAPER_SIGMA['CO2']} sigma, CO {PAPER_SIGMA['CO']} sigma, H2S {PAPER_SIGMA['H2S']} sigma")
 
 
 if __name__ == "__main__":

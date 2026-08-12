@@ -6,7 +6,11 @@ weighted_mean_depth,24183.1,ppm
 continuum_mean_depth,24069.4,ppm (3.6-3.9 um)
 co2_band_mean_depth,24308.6,ppm (4.3-4.6 um)
 co2_band_excess,239.2,ppm
-co2_band_significance,22.1,sigma
+co2_band_contrast_snr_this_script,22.1,"sigma (two-window band contrast, not a molecular detection significance)"
 h2o_h2s_band_mean_depth,24324.6,ppm (2.6-3.0 um)
 h2o_h2s_band_excess,255.2,ppm
-h2o_h2s_band_significance,24.7,sigma
+h2o_h2s_band_contrast_snr_this_script,24.7,"sigma (two-window band contrast, not a molecular detection significance)"
+paper_retrieval_significance_H2O,13.4,"sigma (Fu et al. 2024, full retrieval)"
+paper_retrieval_significance_CO2,11.2,"sigma (Fu et al. 2024, full retrieval)"
+paper_retrieval_significance_CO,5.0,"sigma (Fu et al. 2024, full retrieval)"
+paper_retrieval_significance_H2S,4.5,"sigma (Fu et al. 2024, full retrieval)"

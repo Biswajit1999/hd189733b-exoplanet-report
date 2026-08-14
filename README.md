@@ -37,6 +37,20 @@ index.html              the report webpage
 data/                    JWST NIRCam transmission spectrum (Zenodo)
 scripts/analyze_spectrum.py   band-comparison analysis, this script vs. the paper
 figures/                 generated plot + summary_statistics.csv
+tests/                   unit tests + a regression check against the real data
+```
+
+## Tests
+
+`tests/test_analysis.py` checks the weighted-mean and band-selection
+functions against hand-computed cases and reruns the full pipeline on
+the real downloaded spectrum, verifying it still reproduces the
+numbers this README documents — including that the paper's own
+retrieval significances stay attached for comparison. Runs
+automatically on every push via GitHub Actions; run locally with:
+
+```bash
+pytest tests/ -v
 ```
 
 ## What the numbers show

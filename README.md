@@ -1,5 +1,9 @@
 # HD 189733 b — Exoplanet Atmosphere Report
 
+<img src="images/thumbnail.png" alt="Artist's concept of HD 189733 b" width="360">
+
+*AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRCam data.*
+
 The "blue planet" — famous for scattered-light Rayleigh haze that gives it
 its inferred azure color — and one of the most intensively studied hot
 Jupiters ever found. This repo runs a two-window band-contrast statistic

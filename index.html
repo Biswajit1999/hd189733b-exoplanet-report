@@ -45,6 +45,9 @@ footer nav { display: flex; gap: 1.2rem; }
 footer a { color: var(--muted); text-decoration: none; }
 footer a:hover { color: var(--accent); }
 .callout { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 1rem 1.2rem; border-radius: 6px; font-size: .93rem; }
+.hero-banner { margin: 1.5rem 0 0; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
+.hero-banner img { width: 100%; height: auto; max-height: 440px; object-fit: cover; display: block; }
+.ai-credit { color: var(--muted); font-size: .72rem; font-style: italic; margin: .5rem 0 0; }
 </style>
 </head>
 <body>
@@ -59,6 +62,11 @@ footer a:hover { color: var(--accent); }
       <span class="badge">JWST NIRCam spectrum, 139 points (Fu et al. 2024)</span>
     </div>
   </header>
+
+  <div class="hero-banner">
+    <img src="images/hero.png" alt="Artist's concept of the deep-blue hot Jupiter HD 189733 b">
+  </div>
+  <p class="ai-credit">AI-generated artist's concept of HD 189733 b — not a real photograph. All data and figures in this report come from actual JWST NIRCam observations (see below).</p>
 
   <section>
     <h2>The planet, in numbers</h2>
@@ -79,6 +87,10 @@ footer a:hover { color: var(--accent); }
     <h2>A hot Jupiter studied longer than almost any other</h2>
     <p>HD 189733 b's brightness and proximity (under 65 light-years away) have made it one of the single most observed exoplanets since its 2005 discovery: it hosts the first exoplanet weather map (Knutson et al., 2007), the first detection of scattered-light Rayleigh haze that gave rise to its "blue planet" reputation (Pont et al., 2013; the color itself was inferred, not directly imaged), and now, with JWST, some of the highest-precision transmission spectra obtained for any exoplanet.</p>
     <p>The data behind this report comes from a JWST NIRCam study reporting a metal-enriched atmosphere with a detection of hydrogen sulfide (H2S) — a molecule rarely confirmed in an exoplanet atmosphere — alongside water and carbon dioxide.</p>
+    <div class="figure">
+      <img src="images/3d-render.png" alt="Close-up 3D-rendered concept of HD 189733 b's blue, hazy atmosphere">
+      <p class="ai-credit">AI-generated 3D-render-style concept of the planet's deep-blue haze layer — not an actual image of the planet.</p>
+    </div>
   </section>
 
   <section>
@@ -101,6 +113,10 @@ footer a:hover { color: var(--accent); }
   <section>
     <h2>Data and method notes</h2>
     <p>System parameters come from the NASA Exoplanet Archive TAP service. The spectrum is reduced JWST NIRCam data released publicly on Zenodo (record <a href="https://doi.org/10.5281/zenodo.11459715">10.5281/zenodo.11459715</a>). See <a href="data/">data/</a> for the file as downloaded and <a href="scripts/analyze_spectrum.py">scripts/analyze_spectrum.py</a> for the band-comparison analysis (<code>python scripts/analyze_spectrum.py</code> to rerun it).</p>
+    <div class="figure">
+      <img src="images/instrument.png" alt="AI-generated illustration of the James Webb Space Telescope">
+      <p class="ai-credit">AI-generated illustration of the James Webb Space Telescope, whose NIRCam instrument took the real spectrum used in this report. Not an official mission photograph — see <a href="https://www.jwst.nasa.gov/">NASA/JWST</a> for real imagery.</p>
+    </div>
   </section>
 
   <section>

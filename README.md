@@ -1,8 +1,10 @@
 # HD 189733 b — Exoplanet Atmosphere Report
 
-<img src="images/thumbnail.png" alt="Artist's concept of HD 189733 b" width="360">
+<p align="center">
+  <img src="images/thumbnail.png" alt="Artist's concept of HD 189733 b" width="360">
+</p>
 
-*AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRCam data.*
+<p align="center"><em>AI-generated artist's concept — not a real photograph. See the report for actual JWST NIRCam data.</em></p>
 
 The "blue planet" — famous for scattered-light Rayleigh haze that gives it
 its inferred azure color — and one of the most intensively studied hot
@@ -11,8 +13,7 @@ on a high-precision JWST NIRCam transmission spectrum and reports it
 next to the molecular detection significances the source paper actually
 publishes.
 
-**[Open the full report](index.html)** (open locally in a browser, or serve
-with `python -m http.server` from this directory).
+**[Open the full report](https://biswajit1999.github.io/hd189733b-exoplanet-report/)** — the live GitHub Pages version. You can also open `index.html` locally in a browser, or serve it with `python -m http.server` from this directory.
 
 ## Data sources
 

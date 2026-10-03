@@ -26,10 +26,12 @@ publishes.
 
 - **System parameters** — from the NASA Exoplanet Archive TAP
   service (`pscomppars` table).
-- **JWST NIRCam spectrum** — 139 wavelength bins, 2.4-5.0 microns,
+- **JWST NIRCam spectrum and models** — 139 wavelength bins, 2.4-5.0 microns,
   from Fu et al. (2024), reporting H2S and metal enrichment in this
   atmosphere, released publicly on Zenodo
   ([10.5281/zenodo.11459715](https://doi.org/10.5281/zenodo.11459715)).
+- **Publication models** — all supplied full, cloud-only, and molecule-removed
+  median curves from both free and grid retrieval families in Zenodo v1.
 - **Analysis** — `scripts/analyze_spectrum.py` computes the weighted mean
   transit depth and compares two wavelength windows (CO2 near
   4.3-4.6 um, an H2O/H2S-influenced window near 2.6-3.0 um) against a
@@ -46,10 +48,11 @@ publishes.
 
 ```text
 index.html              the report webpage
-data/                    JWST NIRCam transmission spectrum (Zenodo)
-scripts/analyze_spectrum.py   band-comparison analysis, this script vs. the paper
-figures/                 generated plot + summary_statistics.csv
-tests/                   unit tests + a regression check against the real data
+data/                    JWST spectrum plus 12 supplied model curves
+scripts/analyze_spectrum.py   band audit and supplied-model shape comparison
+scripts/validate_data.py      archive-subset identity and table validation
+figures/                 three-panel figure plus CSV/JSON results
+tests/                   analytic, regression, and failure-mode tests
 ```
 
 ## Tests
@@ -67,7 +70,7 @@ pytest tests/ -v
 
 ## What the numbers show
 
-Weighted mean transit depth 24183 ppm. This script's own two-window
+Weighted mean transit depth 24183 ppm. This script's legacy two-window
 comparison gives 239 ppm (22.1σ band S/N) for the CO2 window and 255 ppm
 (24.7σ band S/N) for the H2O/H2S window — high signal-to-noise on a
 simple contrast test, but not molecular detection significances, since
@@ -77,6 +80,13 @@ a full atmospheric retrieval: H2O at 13.4σ, CO2 at 11.2σ, CO at 5σ, H2S
 at 4.5σ. Both approaches agree the spectrum has real structure in these
 regions; only the retrieval identifies which molecule causes it.
 
+The publication-supplied full-model medians provide a stronger shape check
+after fitting one vertical offset: χ²/dof = 147.22/138 (free) and 172.24/138
+(grid). Molecule-removed and cloud-only median curves are much worse, with
+Δχ² = 1182–2908 (free) and 1506–3178 (grid) relative to their family full
+median. These fixed-curve comparisons are descriptive—not refitted nested
+models, Bayes factors, or new molecule significances.
+
 ## Limitations
 
 The two-window comparison here can't attribute an absorption feature to
@@ -84,7 +94,10 @@ a specific molecule on its own — a full retrieval, which models every
 absorber and the continuum simultaneously, is what the source paper
 actually uses to reach its molecule-by-molecule significances. This
 repo's own band-contrast numbers are useful as a quick look at where
-the spectrum has structure, not as a substitute for that retrieval.
+the spectrum has structure, not as a substitute for that retrieval. The
+ablation curves are also fixed publication products evaluated here with
+diagonal errors and one offset. Since their parameters are not refitted and
+spectral covariance is unavailable, their Δχ² cannot be mapped to significance.
 
 ## References
 

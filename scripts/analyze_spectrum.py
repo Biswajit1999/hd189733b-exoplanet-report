@@ -22,16 +22,15 @@ are reported alongside those, not as a substitute for them.
 from __future__ import annotations
 
 import csv
+import json
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import scienceplots  # noqa: F401 (registers 'science' style)
 import numpy as np
-
-plt.style.use(["science", "no-latex"])
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 FIG_DIR = Path(__file__).resolve().parents[1] / "figures"
+MODEL_DIR = DATA_DIR / "models"
 
 CO2_BAND = (4.3, 4.6)
 H2O_H2S_BAND = (2.6, 3.0)
@@ -70,6 +69,48 @@ def band_stats(wave, depth, err, band):
     return weighted_mean(depth[mask], err[mask])
 
 
+def load_model(path: Path) -> tuple[np.ndarray, np.ndarray]:
+    table = np.loadtxt(path)
+    table = table[np.all(np.isfinite(table), axis=1)]
+    wavelength, depth = table[:, 0], table[:, 1]
+    # The grid-family R=300 full model stores micron values multiplied by 1e6.
+    if np.median(wavelength) > 1e4:
+        wavelength = wavelength / 1e6
+    order = np.argsort(wavelength)
+    return wavelength[order], depth[order]
+
+
+def compare_model(
+    wave: np.ndarray, depth: np.ndarray, error: np.ndarray, model_path: Path
+) -> dict[str, float | str]:
+    model_wave, model_depth = load_model(model_path)
+    if wave.min() < model_wave.min() or wave.max() > model_wave.max():
+        raise ValueError(f"model does not cover data range: {model_path}")
+    prediction = np.interp(wave, model_wave, model_depth)
+    weights = 1.0 / error**2
+    offset = float(np.sum((depth - prediction) * weights) / np.sum(weights))
+    residual = (depth - prediction - offset) / error
+    chi2 = float(np.sum(residual**2))
+    return {
+        "model": model_path.stem,
+        "chi2": chi2,
+        "dof": int(wave.size - 1),
+        "reduced_chi2": chi2 / (wave.size - 1),
+        "fitted_offset_ppm": offset * 1e6,
+    }
+
+
+def model_family_metrics(
+    wave: np.ndarray, depth: np.ndarray, error: np.ndarray, family: str
+) -> list[dict[str, float | str]]:
+    rows = [compare_model(wave, depth, error, path) for path in sorted((MODEL_DIR / family).glob("*.txt"))]
+    full = next(row for row in rows if str(row["model"]).startswith("FULL"))
+    for row in rows:
+        row["delta_chi2_vs_full_median_curve"] = float(row["chi2"]) - float(full["chi2"])
+        row["family"] = family
+    return rows
+
+
 def main() -> None:
     FIG_DIR.mkdir(exist_ok=True)
     wave, depth, err = load_spectrum(DATA_DIR / "nircam_transmission_spectrum.txt")
@@ -85,6 +126,13 @@ def main() -> None:
     co2_sigma = abs(co2_mean - cont_mean) / np.sqrt(co2_err**2 + cont_err**2)
     h2o_excess_ppm = (h2o_mean - cont_mean) * 1e6
     h2o_sigma = abs(h2o_mean - cont_mean) / np.sqrt(h2o_err**2 + cont_err**2)
+    model_rows = model_family_metrics(wave, depth, err, "free") + model_family_metrics(
+        wave, depth, err, "grid"
+    )
+    with (FIG_DIR / "model_comparison.csv").open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(model_rows[0]))
+        writer.writeheader()
+        writer.writerows(model_rows)
 
     summary_path = FIG_DIR / "summary_statistics.csv"
     with summary_path.open("w", newline="") as handle:
@@ -104,18 +152,60 @@ def main() -> None:
         for molecule, sigma in PAPER_SIGMA.items():
             writer.writerow([f"paper_retrieval_significance_{molecule}", f"{sigma}", "sigma (Fu et al. 2024, full retrieval)"])
 
-    fig, ax = plt.subplots(figsize=(9.5, 5.5))
+    payload = {
+        "source": {
+            "zenodo_record": "10.5281/zenodo.11459715",
+            "archive_md5": "7b39f9b6fdfc0d19a919a6d27eebde28",
+            "n_spectrum_bins": int(wave.size),
+        },
+        "supplied_median_curve_comparisons": model_rows,
+        "inference_boundary": (
+            "One fitted vertical offset and diagonal errors. Delta chi-square between supplied "
+            "median curves is descriptive and is not a retrieval Bayes factor or molecule significance."
+        ),
+        "published_retrieval_significance_sigma": PAPER_SIGMA,
+    }
+    (FIG_DIR / "analysis_summary.json").write_text(
+        json.dumps(payload, indent=2) + "\n", encoding="utf-8"
+    )
+
+    fig, (ax, ax_r, ax_d) = plt.subplots(3, 1, figsize=(10, 11), constrained_layout=True)
     ax.errorbar(wave, depth * 1e6, yerr=err * 1e6, fmt="o", ms=3, color="#2c5f8a", ecolor="#9fbfd8", elinewidth=0.8, label="HD 189733 b, JWST NIRCam")
-    ax.axhline(mean_depth * 1e6, color="#555555", lw=1, ls="--", label="weighted mean")
+    full_predictions = {}
+    for family, color in (("free", "#b44b2a"), ("grid", "#2a7f62")):
+        row = next(item for item in model_rows if item["family"] == family and str(item["model"]).startswith("FULL"))
+        path = next((MODEL_DIR / family).glob("FULL*.txt"))
+        model_wave, model_depth = load_model(path)
+        prediction = np.interp(wave, model_wave, model_depth) + float(row["fitted_offset_ppm"]) / 1e6
+        full_predictions[family] = prediction
+        ax.plot(wave, prediction * 1e6, color=color, lw=1.6, label=f"{family} full median + offset")
     ax.axvspan(*H2O_H2S_BAND, color="#1f6f5c", alpha=0.12, label="H2O/H2S-influenced band (2.6-3.0 um)")
     ax.axvspan(*CO2_BAND, color="#c0562a", alpha=0.12, label="CO2 band (4.3-4.6 um)")
     ax.axvspan(*CONTINUUM_BAND, color="#999999", alpha=0.12, label="continuum window (3.6-3.9 um)")
     ax.set_xlabel("Wavelength [micron]")
     ax.set_ylabel("Transit depth (Rp/Rs)^2 [ppm]")
-    ax.set_title("HD 189733 b transmission spectrum (JWST NIRCam)")
+    ax.set_title("A  JWST/NIRCam spectrum and supplied full-model medians")
     ax.legend(fontsize=7.5, frameon=False, loc="upper left")
     ax.grid(alpha=0.25)
-    fig.tight_layout()
+
+    for family, color in (("free", "#b44b2a"), ("grid", "#2a7f62")):
+        ax_r.plot(wave, (depth - full_predictions[family]) / err, marker="o", ms=2.5, lw=0.8, color=color, label=family)
+    ax_r.axhline(0, color="#555", lw=1)
+    ax_r.set(title="B  Standardized residuals", ylabel="(data − model) / σ", xlabel="Wavelength [micron]")
+    ax_r.legend(frameon=False)
+    ax_r.grid(alpha=0.2)
+
+    labels = ["cloud", "−CO", "−CO2", "−H2O", "−H2S"]
+    x = np.arange(len(labels))
+    for index, (family, color) in enumerate((("free", "#b44b2a"), ("grid", "#2a7f62"))):
+        family_rows = {str(row["model"]): row for row in model_rows if row["family"] == family}
+        keys = ["Cloud_only_TD_median_result", "xCO_TD_median_result", "xCO2_TD_median_result", "xH2O_TD_median_result", "xH2S_TD_median_result"]
+        values = [float(family_rows[key]["delta_chi2_vs_full_median_curve"]) for key in keys]
+        ax_d.bar(x + (index - 0.5) * 0.34, values, width=0.34, color=color, label=family)
+    ax_d.set_xticks(x, labels)
+    ax_d.set(title="C  Shape mismatch of supplied ablation medians", ylabel="Δχ² vs full median (descriptive)")
+    ax_d.legend(frameon=False)
+    ax_d.grid(axis="y", alpha=0.2)
     fig.savefig(FIG_DIR / "hd189733b_transmission_spectrum.png", dpi=200)
 
     print(f"Wrote {summary_path}")
@@ -124,6 +214,9 @@ def main() -> None:
     print(f"CO2-band contrast (this script) = {co2_excess_ppm:.1f} ppm ({co2_sigma:.1f} sigma band S/N)")
     print(f"H2O/H2S-band contrast (this script) = {h2o_excess_ppm:.1f} ppm ({h2o_sigma:.1f} sigma band S/N)")
     print(f"Fu et al. (2024) retrieval significances: H2O {PAPER_SIGMA['H2O']} sigma, CO2 {PAPER_SIGMA['CO2']} sigma, CO {PAPER_SIGMA['CO']} sigma, H2S {PAPER_SIGMA['H2S']} sigma")
+    for family in ("free", "grid"):
+        full = next(row for row in model_rows if row["family"] == family and str(row["model"]).startswith("FULL"))
+        print(f"{family} full median: chi2/dof={float(full['chi2']):.2f}/{int(full['dof'])}")
 
 
 if __name__ == "__main__":

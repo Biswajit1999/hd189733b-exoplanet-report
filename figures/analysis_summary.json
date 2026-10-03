@@ -1,0 +1,124 @@
+{
+  "source": {
+    "zenodo_record": "10.5281/zenodo.11459715",
+    "archive_md5": "7b39f9b6fdfc0d19a919a6d27eebde28",
+    "n_spectrum_bins": 139
+  },
+  "supplied_median_curve_comparisons": [
+    {
+      "model": "Cloud_only_TD_median_result",
+      "chi2": 1329.2382358649336,
+      "dof": 138,
+      "reduced_chi2": 9.63216112945604,
+      "fitted_offset_ppm": 275.2492591419676,
+      "delta_chi2_vs_full_median_curve": 1182.017208547408,
+      "family": "free"
+    },
+    {
+      "model": "FULL_TD_median_result",
+      "chi2": 147.22102731752554,
+      "dof": 138,
+      "reduced_chi2": 1.0668190385327938,
+      "fitted_offset_ppm": 5.960468595491451,
+      "delta_chi2_vs_full_median_curve": 0.0,
+      "family": "free"
+    },
+    {
+      "model": "xCO2_TD_median_result",
+      "chi2": 1467.0903573425062,
+      "dof": 138,
+      "reduced_chi2": 10.63108954596019,
+      "fitted_offset_ppm": 204.30434260615385,
+      "delta_chi2_vs_full_median_curve": 1319.8693300249806,
+      "family": "free"
+    },
+    {
+      "model": "xCO_TD_median_result",
+      "chi2": 1654.3539981933118,
+      "dof": 138,
+      "reduced_chi2": 11.988072450676173,
+      "fitted_offset_ppm": 242.46602843137455,
+      "delta_chi2_vs_full_median_curve": 1507.1329708757862,
+      "family": "free"
+    },
+    {
+      "model": "xH2O_TD_median_result",
+      "chi2": 3055.383172638559,
+      "dof": 138,
+      "reduced_chi2": 22.14045777274318,
+      "fitted_offset_ppm": 107.82765337095896,
+      "delta_chi2_vs_full_median_curve": 2908.162145321033,
+      "family": "free"
+    },
+    {
+      "model": "xH2S_TD_median_result",
+      "chi2": 2524.938552576792,
+      "dof": 138,
+      "reduced_chi2": 18.296656178092697,
+      "fitted_offset_ppm": 186.83864221871576,
+      "delta_chi2_vs_full_median_curve": 2377.7175252592665,
+      "family": "free"
+    },
+    {
+      "model": "Cloud_only_TD_median_result",
+      "chi2": 1678.334664461439,
+      "dof": 138,
+      "reduced_chi2": 12.161845394648108,
+      "fitted_offset_ppm": 294.7680899944586,
+      "delta_chi2_vs_full_median_curve": 1506.0904870275467,
+      "family": "grid"
+    },
+    {
+      "model": "FULL_TD_median_result_r300",
+      "chi2": 172.24417743389213,
+      "dof": 138,
+      "reduced_chi2": 1.2481462132890735,
+      "fitted_offset_ppm": 0.4122908057107969,
+      "delta_chi2_vs_full_median_curve": 0.0,
+      "family": "grid"
+    },
+    {
+      "model": "xCO2_TD_median_result",
+      "chi2": 1779.4124798791267,
+      "dof": 138,
+      "reduced_chi2": 12.89429333245744,
+      "fitted_offset_ppm": 213.86679433303044,
+      "delta_chi2_vs_full_median_curve": 1607.1683024452345,
+      "family": "grid"
+    },
+    {
+      "model": "xCO_TD_median_result",
+      "chi2": 1816.07572061841,
+      "dof": 138,
+      "reduced_chi2": 13.159968989988478,
+      "fitted_offset_ppm": 266.0262399992821,
+      "delta_chi2_vs_full_median_curve": 1643.8315431845178,
+      "family": "grid"
+    },
+    {
+      "model": "xH2O_TD_median_result",
+      "chi2": 3349.915460504233,
+      "dof": 138,
+      "reduced_chi2": 24.27474971379879,
+      "fitted_offset_ppm": 68.77707697228247,
+      "delta_chi2_vs_full_median_curve": 3177.671283070341,
+      "family": "grid"
+    },
+    {
+      "model": "xH2S_TD_median_result",
+      "chi2": 2166.4483350146465,
+      "dof": 138,
+      "reduced_chi2": 15.698900978367003,
+      "fitted_offset_ppm": 218.18639074732332,
+      "delta_chi2_vs_full_median_curve": 1994.2041575807543,
+      "family": "grid"
+    }
+  ],
+  "inference_boundary": "One fitted vertical offset and diagonal errors. Delta chi-square between supplied median curves is descriptive and is not a retrieval Bayes factor or molecule significance.",
+  "published_retrieval_significance_sigma": {
+    "H2O": 13.4,
+    "CO2": 11.2,
+    "CO": 5.0,
+    "H2S": 4.5
+  }
+}

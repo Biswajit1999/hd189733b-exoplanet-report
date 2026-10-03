@@ -4,8 +4,9 @@ headline numbers when run on the real downloaded data."""
 
 import csv
 
-import numpy as np
 import analyze_spectrum as spec
+import numpy as np
+import pytest
 
 
 def test_weighted_mean_matches_hand_computed_case():
@@ -39,3 +40,19 @@ def test_pipeline_reproduces_documented_headline_numbers():
     # comparison, not silently dropped.
     assert float(rows["paper_retrieval_significance_H2O"]) == 13.4
     assert float(rows["paper_retrieval_significance_CO2"]) == 11.2
+    model_rows = spec.model_family_metrics(
+        *spec.load_spectrum(spec.DATA_DIR / "nircam_transmission_spectrum.txt"), "free"
+    )
+    full = next(row for row in model_rows if str(row["model"]).startswith("FULL"))
+    assert float(full["chi2"]) == pytest.approx(147.22, abs=0.1)
+    assert (spec.FIG_DIR / "model_comparison.csv").exists()
+    assert (spec.FIG_DIR / "analysis_summary.json").exists()
+
+
+def test_invalid_model_coverage_fails(tmp_path):
+    path = tmp_path / "short.txt"
+    np.savetxt(path, np.array([[3.0, 0.02], [3.1, 0.02]]))
+    with pytest.raises(ValueError, match="does not cover"):
+        spec.compare_model(
+            np.array([2.5, 3.0]), np.array([0.02, 0.02]), np.array([1e-4, 1e-4]), path
+        )

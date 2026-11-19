@@ -24,6 +24,13 @@ publishes.
 
 ## Research evidence and downloads
 
+
+- [Download the machine-readable table profiles](evidence/table-profiles.json) for 2 archived tables. Open `table-evidence.html` from the checkout for the coverage chart.
+- Start with [Analysis summary](figures/analysis_summary.json), [Summary statistics](figures/summary_statistics.csv), [Model comparison](figures/model_comparison.csv).
+- [View Hd189733b transmission spectrum](figures/hd189733b_transmission_spectrum.png).
+
+To rebuild the table profiles after rebuilding the evidence inventory, run `python scripts/profile_evidence_tables.py` followed by `python scripts/render_table_profiles.py`.
+
 [Open the evidence browser](https://biswajit1999.github.io/hd189733b-exoplanet-report/evidence.html) for 11 selected files, including [`analysis_summary.json`](figures/analysis_summary.json). Each file has a download link and SHA-256 digest.
 
 Rebuild the inventory and browser with `python scripts/evidence_catalog.py` and `python scripts/render_evidence_page.py`.

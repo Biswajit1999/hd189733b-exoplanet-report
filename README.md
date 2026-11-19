@@ -22,6 +22,12 @@ publishes.
 
 **[Open the full report](https://biswajit1999.github.io/hd189733b-exoplanet-report/)** — the live GitHub Pages version. You can also open `index.html` locally in a browser, or serve it with `python -m http.server` from this directory.
 
+## Research evidence and downloads
+
+[Open the evidence browser](https://biswajit1999.github.io/hd189733b-exoplanet-report/evidence.html) for 11 selected files, including [`analysis_summary.json`](figures/analysis_summary.json). Each file has a download link and SHA-256 digest.
+
+Rebuild the inventory and browser with `python scripts/evidence_catalog.py` and `python scripts/render_evidence_page.py`.
+
 ## Data sources
 
 - **System parameters** — from the NASA Exoplanet Archive TAP

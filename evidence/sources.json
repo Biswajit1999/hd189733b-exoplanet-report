@@ -1,0 +1,61 @@
+{
+  "project": "HD 189733 b — Exoplanet Atmosphere Report",
+  "repository": "https://github.com/Biswajit1999/hd189733b-exoplanet-report",
+  "files": [
+    {
+      "label": "Data source notes",
+      "path": "data/SOURCE.md",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Nircam transmission spectrum",
+      "path": "data/nircam_transmission_spectrum.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Cloud only TD median result",
+      "path": "data/models/free/Cloud_only_TD_median_result.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "FULL TD median result",
+      "path": "data/models/free/FULL_TD_median_result.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "XCO2 TD median result",
+      "path": "data/models/free/xCO2_TD_median_result.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "XCO TD median result",
+      "path": "data/models/free/xCO_TD_median_result.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "XH2O TD median result",
+      "path": "data/models/free/xH2O_TD_median_result.txt",
+      "role": "Data and provenance"
+    },
+    {
+      "label": "Analysis summary",
+      "path": "figures/analysis_summary.json",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Summary statistics",
+      "path": "figures/summary_statistics.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Model comparison",
+      "path": "figures/model_comparison.csv",
+      "role": "Tables and numerical results"
+    },
+    {
+      "label": "Hd189733b transmission spectrum",
+      "path": "figures/hd189733b_transmission_spectrum.png",
+      "role": "Figures"
+    }
+  ]
+}

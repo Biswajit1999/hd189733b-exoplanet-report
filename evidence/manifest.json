@@ -1,0 +1,193 @@
+{
+  "schema": 1,
+  "project": "HD 189733 b — Exoplanet Atmosphere Report",
+  "repository": "https://github.com/Biswajit1999/hd189733b-exoplanet-report",
+  "files": [
+    {
+      "label": "Data source notes",
+      "path": "data/SOURCE.md",
+      "role": "Data and provenance",
+      "bytes": 1155,
+      "sha256": "9a3dbba8088a695664b5a86010902a769198644a01623ae1dcf57a6612f8f58e",
+      "hash_basis": "LF-normalised text",
+      "format": "MD"
+    },
+    {
+      "label": "Nircam transmission spectrum",
+      "path": "data/nircam_transmission_spectrum.txt",
+      "role": "Data and provenance",
+      "bytes": 13989,
+      "sha256": "588f0630adfa5515d918f6c463a17be45b64955ece8a2069196c81e8de126ced",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Cloud only TD median result",
+      "path": "data/models/free/Cloud_only_TD_median_result.txt",
+      "role": "Data and provenance",
+      "bytes": 1348550,
+      "sha256": "8e5c3ba012030287590a865a6f9c033564d25e1a100b6ad3e3cee9dc234b3ac5",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "FULL TD median result",
+      "path": "data/models/free/FULL_TD_median_result.txt",
+      "role": "Data and provenance",
+      "bytes": 41995,
+      "sha256": "7e0f84be365a52d4e935c50da495de11327db9a9ecfb704affdb6cfa77749191",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "XCO2 TD median result",
+      "path": "data/models/free/xCO2_TD_median_result.txt",
+      "role": "Data and provenance",
+      "bytes": 1348550,
+      "sha256": "196d1eab49a022c1835346e787c8e2381826c7b324c694d06056628c1a147567",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "XCO TD median result",
+      "path": "data/models/free/xCO_TD_median_result.txt",
+      "role": "Data and provenance",
+      "bytes": 1348550,
+      "sha256": "7ac590d9bcad219d05e2ade08f693d8c5d0a34594905f8885e952580f768e18d",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "XH2O TD median result",
+      "path": "data/models/free/xH2O_TD_median_result.txt",
+      "role": "Data and provenance",
+      "bytes": 1348550,
+      "sha256": "65888e4727f7419fee83e7b2f5d379c74f32b14b3c6704f100ed7b68a19be309",
+      "hash_basis": "LF-normalised text",
+      "format": "TXT"
+    },
+    {
+      "label": "Analysis summary",
+      "path": "figures/analysis_summary.json",
+      "role": "Tables and numerical results",
+      "bytes": 3813,
+      "sha256": "67e745251c9636968cfc297fc20210a90070b228c54aa86fa1d24f71355843d3",
+      "hash_basis": "LF-normalised text",
+      "format": "JSON",
+      "keys": [
+        "source",
+        "supplied_median_curve_comparisons",
+        "inference_boundary",
+        "published_retrieval_significance_sigma"
+      ],
+      "arrays": {
+        "supplied_median_curve_comparisons": 12
+      }
+    },
+    {
+      "label": "Summary statistics",
+      "path": "figures/summary_statistics.csv",
+      "role": "Tables and numerical results",
+      "bytes": 877,
+      "sha256": "2c56d77f7912ddedb852f3c29b89cacce53de76157d2fe0d98f9fe1b467ee9a8",
+      "hash_basis": "LF-normalised text",
+      "format": "CSV",
+      "rows": 15,
+      "columns": 3,
+      "headers": [
+        "quantity",
+        "value",
+        "unit"
+      ],
+      "preview": [
+        [
+          "n_wavelength_bins",
+          "139",
+          "count"
+        ],
+        [
+          "wavelength_min",
+          "2.405",
+          "micron"
+        ],
+        [
+          "wavelength_max",
+          "4.974",
+          "micron"
+        ],
+        [
+          "weighted_mean_depth",
+          "24183.1",
+          "ppm"
+        ]
+      ]
+    },
+    {
+      "label": "Model comparison",
+      "path": "figures/model_comparison.csv",
+      "role": "Tables and numerical results",
+      "bytes": 1334,
+      "sha256": "6d76c811c82ae9a35d9a69c4c20fd386ca607df7ad0da386c2a476d1e9cd8168",
+      "hash_basis": "LF-normalised text",
+      "format": "CSV",
+      "rows": 12,
+      "columns": 7,
+      "headers": [
+        "model",
+        "chi2",
+        "dof",
+        "reduced_chi2",
+        "fitted_offset_ppm",
+        "delta_chi2_vs_full_median_curve",
+        "family"
+      ],
+      "preview": [
+        [
+          "Cloud_only_TD_median_result",
+          "1329.2382358649336",
+          "138",
+          "9.63216112945604",
+          "275.2492591419676",
+          "1182.017208547408",
+          "free"
+        ],
+        [
+          "FULL_TD_median_result",
+          "147.22102731752554",
+          "138",
+          "1.0668190385327938",
+          "5.960468595491451",
+          "0.0",
+          "free"
+        ],
+        [
+          "xCO2_TD_median_result",
+          "1467.0903573425062",
+          "138",
+          "10.63108954596019",
+          "204.30434260615385",
+          "1319.8693300249806",
+          "free"
+        ],
+        [
+          "xCO_TD_median_result",
+          "1654.3539981933118",
+          "138",
+          "11.988072450676173",
+          "242.46602843137455",
+          "1507.1329708757862",
+          "free"
+        ]
+      ]
+    },
+    {
+      "label": "Hd189733b transmission spectrum",
+      "path": "figures/hd189733b_transmission_spectrum.png",
+      "role": "Figures",
+      "bytes": 480395,
+      "sha256": "d94d4fa8c8b11e1ecf34667041cb9fbac1863bdb586d8bc51b0b03b0ee3289e7",
+      "hash_basis": "exact bytes",
+      "format": "PNG"
+    }
+  ]
+}
